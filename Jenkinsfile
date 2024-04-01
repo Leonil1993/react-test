@@ -75,7 +75,7 @@ pipeline {
                     dockerImage.tag("$localRegistry/$imageName:${env.BUILD_NUMBER}")
                     
                     // Push the tagged image to the local registry
-                    dockerImage.push()
+                    dockerImage.push("${env.BUILD_NUMBER}")
                 }
             }
         }
