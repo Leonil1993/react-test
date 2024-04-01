@@ -17,7 +17,7 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage ("bulding Image"){
+        stage ("Building Image"){
             steps{
                 script{
                     dockerImage = docker.build imageName
@@ -27,63 +27,11 @@ pipeline {
         stage ("Deploy Image"){
             steps{
                 script{
-                    // docker.withServer('npipe://./pipe/docker_engine'){
-                    // }
+                    docker.withRegistry("https://registry.hub.docker.com", 'dockerhub-creds' ){
                         dockerImage.push("${env.BUILD_NUMBER}")
+                    }
                 }
             }
         }
     }
 }
-
-
-// pipeline {
-//     agent any
-
-//     environment {
-//         DOCKER_HOST = 'tcp://docker-host:2375' // Replace 'docker-host' with the hostname or IP address of your Docker daemon
-//     }
-
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 checkout scm
-//             }
-//         }
-
-//         stage('Build') {
-//             steps {
-//                 script {
-//                     // Build Docker image
-//                     docker.build('react-test')
-//                 }
-//             }
-//         }
-
-//         stage('Test') {
-//             steps {
-//                 // Run tests (assuming npm test)
-//                 sh 'npm test'
-//             }
-//         }
-
-//         stage('Deploy') {
-//             steps {
-//                 script {
-//                     // Run Docker container from the built image
-//                     docker.image('react-test').run('-p 8080:80 -d')
-//                 }
-//             }
-//         }
-//     }
-
-//     post {
-//         always {
-//             // Clean up Docker resources
-//             script {
-//                 docker.image('react-test').stop()
-//                 docker.image('react-test').remove()
-//             }
-//         }
-//     }
-// }
