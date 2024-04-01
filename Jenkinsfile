@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment{
-        imageName = "react-test"
+        imageName = "react-app"
         registryCredential = "dockerhub"
         dockerImage = ''
     }
@@ -27,7 +27,7 @@ pipeline {
         stage ("Deploy Image"){
             steps{
                 script{
-                    docker.withRegistry( 'https://registry.hub.docker.com', "dockerhub-creds" ){
+                    docker.withServer('npipe://./pipe/docker_engine'){
                         dockerImage.push("${env.BUILD_NUMBER}")
                     }
                 }
