@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment{
-        imageName = "gemstone-testing"
+        imageName = "react-test"
         registryCredential = "dockerhub"
         dockerImage = ''
     }
